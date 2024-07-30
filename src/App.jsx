@@ -4,7 +4,7 @@ function App() {
   let customers = [
     {"name":"Name1", "email":"email1@gmail.com", "password":"mypassword1"},
     {"name":"Name2", "email":"email2@gmail.com", "password":"mypassword2"},
-    {"name":"Name3", "email":"email3@gmail.com", "password":"mypassword3"},
+    {"name":"Name3", "email":"email3@gmail.com", "password":"mypassword3"}
   ];
 
   function onDeleteClick(e) {
@@ -72,7 +72,7 @@ function App() {
                 </tr>
               </tbody>
             </table>
-          <div>
+          <div id="command_buttons">
             <button onClick={(e)=>onDeleteClick(e)}>Delete</button>
             <button onClick={(e)=>onSaveClick(e)}>Save</button>
             <button onClick={(e)=>onCancelClick(e)}>Cancel</button>
