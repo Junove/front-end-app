@@ -1,42 +1,61 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100vw;
+  height: calc(100vh - 4rem);
+
   padding: 2rem;
-  text-align: center;
+  background-color: rgb(229, 234, 227)
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+#content {
+  display: flex;
+  flex-direction: row;
+  row-gap:20px;
+  justify-content:space-evenly;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container {
+  border: 10px brown ridge;
+  background-color: rgb(197, 234, 184);
+  padding:20px; 
+  margin-bottom:20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+caption {
+  font-size: 32px;
+  text-align:left;
+  font-weight:bold;
 }
 
-.card {
-  padding: 2em;
+table {
+  background-color: rgb(197, 234, 184);
+  text-align: left;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 18px;
+  border: 8px brown ridge;
+  border-collapse: collapse;
 }
 
-.read-the-docs {
-  color: #888;
+label {
+  text-align: right;
+  display:block;
+}
+
+thead {
+  font-weight:bold;
+}
+
+th {
+  width: 200px;
+  max-width: 80vw;
+  border-bottom: 8px brown ridge;
+  padding:4px;
+}
+
+td {
+  border-bottom: 2px brown solid;
+  padding:4px;
+}
+
+button {
+  border: 10px solid green;
 }
