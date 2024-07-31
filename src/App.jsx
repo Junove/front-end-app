@@ -1,29 +1,52 @@
+import { useState,useEffect } from 'react';
 import './App.css'
+import * as memdb from './memdb.js';
 
 function App() {
-  let customers = [
-    {"name":"Name1", "email":"email1@gmail.com", "password":"mypassword1"},
-    {"name":"Name2", "email":"email2@gmail.com", "password":"mypassword2"},
-    {"name":"Name3", "email":"email3@gmail.com", "password":"mypassword3"}
-  ];
+  let defaultCustomer = { "id": -1, "name": "", "email": "", "password": "" };
+  let [customers, setCustomers] = useState([]);
+  let [selectedItem, setSelectedItem] = useState(defaultCustomer);
+  let [formData, setFormData] = useState(
+    {
+      name:"",
+      email:"",
+      password:""
+    }
+  );
 
-  function onDeleteClick(e) {
-    e.preventDefault();
+  const getCustomers = function() {
+    setCustomers(memdb.getAll());
+  }
+
+  useEffect(() => {getCustomers()});
+
+  function onDeleteClick(event) {
+    event.preventDefault();
     console.log("onDeleteClick");
   }
 
-  function onSaveClick(e) {
-    e.preventDefault();
+  function onSaveClick(event) {
+    event.preventDefault();
     console.log("onSaveClick");
   }
 
-  function onCancelClick(e) {
-    e.preventDefault();
-    console.log("onCancelClick");
+  function onCancelClick(event) {
+    event.preventDefault();
+    setFormData(defaultCustomer);
   }
 
-  function handleListClick() {
-    console.log("handleListClick");
+  //Reset selected item if already selected, otherwise update form data
+  function handleListClick(customer) {
+    if(formData.id == customer.id) setFormData(defaultCustomer);
+    else setFormData(customer);
+  }
+
+  //Update form data state based on the form's name attribute
+  function handleFormUpdate(event) {
+    setFormData({
+      ...formData,
+      [event.target.name]:event.target.value
+    });
   }
 
   return (
@@ -43,7 +66,7 @@ function App() {
             <tbody>
               {
                 customers.map((customer) => (
-                  <tr onClick={()=>handleListClick()}>
+                  <tr style={{fontWeight:formData.id==customer.id?'bold':'normal'}} key={customer.id} onClick={()=>handleListClick(customer)}>
                     <td>{customer.name}</td>
                     <td>{customer.email}</td>
                     <td>{customer.password}</td>
@@ -60,22 +83,22 @@ function App() {
               <tbody>
                 <tr>
                   <td><label for="name">Name:</label></td>
-                  <td><input type="text" id="name" name="name"></input></td>
+                  <td><input type="text" id="name" name="name" onChange={handleFormUpdate} value={formData.name}></input></td>
                 </tr>
                 <tr>
                   <td><label tor="email">Email:</label></td>
-                  <td><input type="text" id="email" name="email"></input></td>
+                  <td><input type="text" id="email" name="email" onChange={handleFormUpdate} value={formData.email}></input></td>
                 </tr>
                 <tr>
                   <td><label tor="password">Password:</label></td>
-                  <td><input type="text" id="password" name="password"></input></td>
+                  <td><input type="text" id="password" name="password" onChange={handleFormUpdate} value={formData.password}></input></td>
                 </tr>
               </tbody>
             </table>
           <div id="command_buttons">
-            <button onClick={(e)=>onDeleteClick(e)}>Delete</button>
-            <button onClick={(e)=>onSaveClick(e)}>Save</button>
-            <button onClick={(e)=>onCancelClick(e)}>Cancel</button>
+            <button onClick={onDeleteClick}>Delete</button>
+            <button onClick={onSaveClick}>Save</button>
+            <button onClick={onCancelClick}>Cancel</button>
           </div>
         </form>
         </div>
