@@ -7,7 +7,6 @@ import CustomerAddUpdateForm from './CustomerAddUpdateForm.jsx';
 function App() {
   let defaultCustomer = { "id": -1, "name": "", "email": "", "password": "" };
   let [customers, setCustomers] = useState([]);
-  let [selectedItem, setSelectedItem] = useState(defaultCustomer);
   let [formData, setFormData] = useState(defaultCustomer);
   let mode = formData.id < 0 ? "Add" : "Update";
 
@@ -47,10 +46,8 @@ function App() {
   function handleListClick(customer) {
     if(formData.id == customer.id) {
       setFormData(defaultCustomer);
-      setSelectedItem(defaultCustomer);
     } else {
       setFormData(customer);
-      setSelectedItem(customer);
     }
   }
 
@@ -66,8 +63,8 @@ function App() {
     <>
       <h1>React Frontend Application</h1>
       <div id="content">
-        <CustomerList customers={customers} handleListClick={handleListClick} mode={mode} formData={formData}/>
-        <CustomerAddUpdateForm handleFormUpdate={handleFormUpdate} onDeleteClick={onDeleteClick} onCancelClick={onCancelClick} onSaveClick={onSaveClick} mode={mode} formData={formData}/>
+        <CustomerList customers={customers} formData={formData} mode={mode} handleListClick={handleListClick}/>
+        <CustomerAddUpdateForm formData={formData} mode={mode} handleFormUpdate={handleFormUpdate} onDeleteClick={onDeleteClick} onCancelClick={onCancelClick} onSaveClick={onSaveClick}/>
       </div>
     </>
   )
