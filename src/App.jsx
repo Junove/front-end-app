@@ -6,13 +6,7 @@ function App() {
   let defaultCustomer = { "id": -1, "name": "", "email": "", "password": "" };
   let [customers, setCustomers] = useState([]);
   let [selectedItem, setSelectedItem] = useState(defaultCustomer);
-  let [formData, setFormData] = useState(
-    {
-      name:"",
-      email:"",
-      password:""
-    }
-  );
+  let [formData, setFormData] = useState(defaultCustomer);
 
   const getCustomers = function() {
     setCustomers(memdb.getAll());
@@ -79,7 +73,7 @@ function App() {
         <div>
           <form className="container">
             <table>
-              <caption>Add</caption>
+              <caption>{formData.id < 0 ? "Add" : "Update"}</caption>
               <tbody>
                 <tr>
                   <td><label for="name">Name:</label></td>
