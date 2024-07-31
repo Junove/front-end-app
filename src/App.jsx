@@ -1,6 +1,8 @@
 import { useState,useEffect } from 'react';
 import './App.css'
 import * as memdb from './memdb.js';
+import CustomerList from './CustomerList.jsx';
+import CustomerAddUpdateForm from './CustomerAddUpdateForm.jsx';
 
 function App() {
   let defaultCustomer = { "id": -1, "name": "", "email": "", "password": "" };
@@ -8,11 +10,12 @@ function App() {
   let [selectedItem, setSelectedItem] = useState(defaultCustomer);
   let [formData, setFormData] = useState(defaultCustomer);
   let mode = formData.id < 0 ? "Add" : "Update";
+
+  useEffect(() => {getCustomers()});
+
   const getCustomers = function() {
     setCustomers(memdb.getAll());
   }
-
-  useEffect(() => {getCustomers()});
 
   function onDeleteClick(event) {
     event.preventDefault();
@@ -63,55 +66,8 @@ function App() {
     <>
       <h1>React Frontend Application</h1>
       <div id="content">
-        <div className="container">
-          <table>
-            <caption>Customer List</caption>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Pass</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                customers.map((customer) => (
-                  <tr style={{fontWeight:formData.id==customer.id?'bold':'normal'}} key={customer.id} onClick={()=>handleListClick(customer)}>
-                    <td>{customer.name}</td>
-                    <td>{customer.email}</td>
-                    <td>{customer.password}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <form className="container">
-            <table>
-              <caption>{mode}</caption>
-              <tbody>
-                <tr>
-                  <td><label for="name">Name:</label></td>
-                  <td><input type="text" id="name" name="name" onChange={handleFormUpdate} value={formData.name} placeholder="Customer Name"></input></td>
-                </tr>
-                <tr>
-                  <td><label tor="email">Email:</label></td>
-                  <td><input type="text" id="email" name="email" onChange={handleFormUpdate} value={formData.email} placeholder="Customer Email"></input></td>
-                </tr>
-                <tr>
-                  <td><label tor="password">Password:</label></td>
-                  <td><input type="text" id="password" name="password" onChange={handleFormUpdate} value={formData.password} placeholder="Customer Password"></input></td>
-                </tr>
-              </tbody>
-            </table>
-          <div id="command_buttons">
-            <button onClick={onDeleteClick}>Delete</button>
-            <button onClick={onSaveClick}>Save</button>
-            <button onClick={onCancelClick}>Cancel</button>
-          </div>
-        </form>
-        </div>
+        <CustomerList customers={customers} handleListClick={handleListClick} mode={mode} formData={formData}/>
+        <CustomerAddUpdateForm handleFormUpdate={handleFormUpdate} onDeleteClick={onDeleteClick} onCancelClick={onCancelClick} onSaveClick={onSaveClick} mode={mode} formData={formData}/>
       </div>
     </>
   )
