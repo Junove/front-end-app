@@ -7,7 +7,7 @@ function App() {
   let [customers, setCustomers] = useState([]);
   let [selectedItem, setSelectedItem] = useState(defaultCustomer);
   let [formData, setFormData] = useState(defaultCustomer);
-
+  let mode = formData.id < 0 ? "Add" : "Update";
   const getCustomers = function() {
     setCustomers(memdb.getAll());
   }
@@ -16,12 +16,23 @@ function App() {
 
   function onDeleteClick(event) {
     event.preventDefault();
-    console.log("onDeleteClick");
+    //Exit if invalid customer
+    if (formData.id < 0) return;
+
+    memdb.deleteById(formData.id);
+    setFormData(defaultCustomer);
+    
   }
 
   function onSaveClick(event) {
     event.preventDefault();
-    console.log("onSaveClick");
+    
+    if (mode == "Add") {
+      memdb.post(formData);
+    } else {
+      memdb.put(formData.id, formData);
+    }
+    setFormData(defaultCustomer);
   }
 
   function onCancelClick(event) {
@@ -31,8 +42,13 @@ function App() {
 
   //Reset selected item if already selected, otherwise update form data
   function handleListClick(customer) {
-    if(formData.id == customer.id) setFormData(defaultCustomer);
-    else setFormData(customer);
+    if(formData.id == customer.id) {
+      setFormData(defaultCustomer);
+      setSelectedItem(defaultCustomer);
+    } else {
+      setFormData(customer);
+      setSelectedItem(customer);
+    }
   }
 
   //Update form data state based on the form's name attribute
@@ -73,19 +89,19 @@ function App() {
         <div>
           <form className="container">
             <table>
-              <caption>{formData.id < 0 ? "Add" : "Update"}</caption>
+              <caption>{mode}</caption>
               <tbody>
                 <tr>
                   <td><label for="name">Name:</label></td>
-                  <td><input type="text" id="name" name="name" onChange={handleFormUpdate} value={formData.name}></input></td>
+                  <td><input type="text" id="name" name="name" onChange={handleFormUpdate} value={formData.name} placeholder="Customer Name"></input></td>
                 </tr>
                 <tr>
                   <td><label tor="email">Email:</label></td>
-                  <td><input type="text" id="email" name="email" onChange={handleFormUpdate} value={formData.email}></input></td>
+                  <td><input type="text" id="email" name="email" onChange={handleFormUpdate} value={formData.email} placeholder="Customer Email"></input></td>
                 </tr>
                 <tr>
                   <td><label tor="password">Password:</label></td>
-                  <td><input type="text" id="password" name="password" onChange={handleFormUpdate} value={formData.password}></input></td>
+                  <td><input type="text" id="password" name="password" onChange={handleFormUpdate} value={formData.password} placeholder="Customer Password"></input></td>
                 </tr>
               </tbody>
             </table>
